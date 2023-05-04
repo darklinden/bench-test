@@ -1,0 +1,38 @@
+version: "3"
+services:
+  go-ws-test:
+    container_name: "go-ws-test"
+    image: golang:1.18-alpine3.16
+    working_dir: /usr/src/app
+    command: sh run.sh
+    environment:
+      - GOPROXY=https://goproxy.io
+    volumes:
+      - ./go-ws:/usr/src/app
+    expose:
+      - "3022"
+    ports:
+      - "3022:3022"
+    networks:
+      app_net:
+        ipv4_address: 10.10.10.22
+  node-ws-test:
+    container_name: "node-ws-test"
+    image: node:16-alpine3.16
+    working_dir: /home/node/app
+    command: sh run.sh
+    volumes:
+      - ./node-ws:/home/node/app
+    expose:
+      - "3044"
+    ports:
+      - "3044:3044"
+    networks:
+      app_net:
+        ipv4_address: 10.10.10.44
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
