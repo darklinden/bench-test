@@ -30,6 +30,20 @@ services:
     networks:
       app_net:
         ipv4_address: 10.10.10.44
+  node-uws-test:
+    container_name: "node-uws-test"
+    image: node:16-buster
+    working_dir: /home/node/app
+    command: sh run.sh
+    volumes:
+      - ./node-uws:/home/node/app
+    expose:
+      - "3055"
+    ports:
+      - "3055:3055"
+    networks:
+      app_net:
+        ipv4_address: 10.10.10.55
 networks:
   app_net:
     driver: bridge
